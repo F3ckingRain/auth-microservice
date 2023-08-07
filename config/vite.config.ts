@@ -1,20 +1,24 @@
+import dns from "dns";
+
 import federation from "@originjs/vite-plugin-federation";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import viteSvgr from "vite-plugin-svgr";
 import viteTsConfig from "vite-tsconfig-paths";
 
+dns.setDefaultResultOrder("verbatim");
+
 export default defineConfig({
   plugins: [
     react(),
     federation({
-      name: "bca-auth-service",
+      name: "authService",
       filename: "authEntry.js",
       exposes: {
-        "./AuthWindow": "./src/components/AuthWindow/AuthWindow",
-        "./AuthModal": "./src/components/AuthModal/AuthModal",
+        "./AuthWindow": "./src/components/AuthWindow/AuthWindow.tsx",
+        "./state": "./src/recoil/atoms/countState/countState.ts",
       },
-      shared: ["react", "react-dom", "react-router-dom"],
+      shared: ["react", "react-dom", "recoil"],
     }),
     viteSvgr(),
     viteTsConfig(),

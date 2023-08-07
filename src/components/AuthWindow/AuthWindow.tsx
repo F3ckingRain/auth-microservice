@@ -1,13 +1,11 @@
 import React, { FC } from "react";
 
 import { RequestBody, RequestHeaders } from "@/api/types";
+import Counter from "@/components/Counter";
 import { signIn } from "@/features/AuthFeatures";
-import useAppDispatch from "@/hooks/useAppDispatch";
 import { AuthWindowProps } from "@/types/types";
 
 const AuthWindow: FC<AuthWindowProps> = ({ frontUrl, serverUrl }) => {
-  const dispatch = useAppDispatch();
-
   const phone = "";
 
   const headers: RequestHeaders = {
@@ -28,14 +26,14 @@ const AuthWindow: FC<AuthWindowProps> = ({ frontUrl, serverUrl }) => {
     body: bodySignIn,
   };
 
-  const clickHandler = () => {
-    dispatch(signIn(request));
-  };
+  const clickHandler = () => {};
 
   return (
     <div>
       <div>authWindow</div>
       <button onClick={clickHandler}>sendSms</button>
+
+      <Counter />
     </div>
   );
 };
