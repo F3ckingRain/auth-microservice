@@ -1,4 +1,5 @@
+import { authType } from "@/recoil/atoms/userState";
+
 export type AuthWindowProps = {
-  frontUrl: typeof window.location;
-  serverUrl: string;
+  changeAuthType?: (type: authType) => void;
 };

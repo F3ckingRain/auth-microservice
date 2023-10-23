@@ -1,0 +1,246 @@
+@import "../../styles/mixins";
+
+.authWindow {
+  margin: auto;
+
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+  max-width: 400px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  box-sizing: border-box;
+
+  transition: all .5s ease-in-out;
+
+  &__sobank {
+    padding: 30px;
+
+    gap: 20px;
+
+    background-color: #fff;
+
+    border-radius: 5px;
+
+    box-shadow: rgba(0, 0, 0, 0.4) 0 0 100px;
+  }
+
+  &__creditPro {
+    padding: 24px;
+
+    gap: 24px;
+
+    background-color: #242424;
+
+    border-radius: 16px;
+
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.60);
+  }
+}
+
+.closeBtn {
+  position: absolute;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  outline: none;
+
+  box-sizing: border-box;
+
+  cursor: pointer;
+
+  transition: all .5s ease-in-out;
+
+  &:before,
+  &:after {
+    content: '';
+
+    position: absolute;
+    inset: 50%;
+
+    width: 2px;
+    height: 60%;
+
+    border-radius: 10px;
+
+    background-color: var(--xColor);
+
+    translate: -50% -50%;
+    transition: all .5s ease-in-out;
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+  }
+
+  &__sobank {
+    --xColor: #fff;
+
+    top: 8px;
+    right: 8px;
+
+    @include BlockLimitSize(25px);
+
+    background-color: #c4c4c4;
+
+    border-radius: 50%;
+
+  }
+
+  &__creditPro {
+    --xColor: #fff;
+
+    top: 24px;
+    right: 24px;
+
+    @include BlockLimitSize(40px);
+
+    border-radius: 8px;
+    background-color: #353535;
+
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+
+    &:before,
+    &:after {
+      height: 50%;
+    }
+  }
+}
+
+.authBlock {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  &__title {
+    width: 100%;
+  }
+
+  &__sobank {
+    gap: 20px;
+
+    &__title {
+      color: #1c1c1e;
+      font-weight: 500;
+      line-height: 1;
+    }
+  }
+
+  &__creditPro {
+    gap: 16px;
+
+    &__title {
+      max-width: calc(100% - 40px);
+
+      color: #fff;
+      font-weight: 400;
+      line-height: 125%;
+    }
+  }
+}
+
+.btn {
+  margin: 0;
+
+  border: none;
+  outline: none;
+
+  background-color: transparent;
+
+  box-sizing: border-box;
+
+  cursor: pointer;
+
+  &__sobank {
+    color: rgba(24,144,255,.7);
+  }
+
+  &__creditPro {
+    padding: 4px 0;
+
+    color: #B87DFF;
+
+    font-weight: 500;
+    line-height: 130%;
+  }
+}
+
+@include mobile-width {
+  .authWindow {
+
+    &__sobank {
+
+    }
+  }
+
+  .authBlock {
+
+    &__creditPro {
+      font-size: 20px;
+
+    }
+  }
+
+  .btn {
+
+    &__sobank,
+    &__creditPro {
+      font-size: 12px;
+    }
+  }
+}
+
+@include desktop-width {
+  .authWindow {
+
+  }
+
+  .authBlock {
+
+    &__creditPro {
+      font-size: 28px;
+    }
+  }
+
+  .btn {
+
+    &__creditPro {
+      font-size: 14px;
+    }
+
+    &__sobank {
+      font-size: 16px;
+    }
+  }
+
+  .closeBtn {
+
+    &__sobank {
+
+      &:hover {
+        rotate: 360deg;
+      }
+    }
+
+    &__creditPro {
+      &:hover {
+        box-shadow: 2px 4px 0 0 #000;
+      }
+    }
+  }
+}

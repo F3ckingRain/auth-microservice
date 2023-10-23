@@ -15,10 +15,17 @@ export default defineConfig({
       name: "authService",
       filename: "authEntry.js",
       exposes: {
-        "./AuthWindow": "./src/components/AuthWindow/AuthWindow.tsx",
-        "./state": "./src/recoil/atoms/countState/countState.ts",
+        "./AuthWindow":
+          "./src/containers/AuthWindowContainer/AuthWindowContainer",
+        "./AuthModel": "./src/models/ModalModel/ModalModel",
       },
-      shared: ["react", "react-dom", "recoil"],
+      shared: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "recoil",
+        "@ca-actual-projects/sobankui",
+      ],
     }),
     viteSvgr(),
     viteTsConfig(),

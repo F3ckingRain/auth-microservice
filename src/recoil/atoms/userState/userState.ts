@@ -1,8 +1,12 @@
-import { atom } from "recoil";
+import { atom, useRecoilState } from "recoil";
+
+import { initialStateUser } from "@/recoil/atoms/userState/index";
 
 export const userState = atom({
   key: "userState",
-  default: {
-    auth: false,
-  },
+  default: initialStateUser,
 });
+
+const useUser = () => useRecoilState(userState);
+
+export default useUser;

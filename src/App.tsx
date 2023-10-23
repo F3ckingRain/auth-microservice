@@ -1,18 +1,27 @@
-import React, { useState } from "react";
+import React, { useCallback } from "react";
 
 import AuthWindow from "./components/AuthWindow/AuthWindow";
 
-import { ServerUrl } from "@/config/server";
+import ModalModel from "@/models/ModalModel/ModalModel";
+import ThemeProvider from "@/theme/ThemeProvider";
 
 const App = () => {
-  const [count, setCount] = useState(0);
+  const { modalState, setOpenedModal } = ModalModel();
+
+  const openHandler = useCallback(() => {
+    setOpenedModal(!modalState.opened);
+  }, [setOpenedModal]);
 
   return (
-    <div>
-      <AuthWindow serverUrl={ServerUrl} frontUrl={window.location} />
+    <ThemeProvider
+      theme="creditPro"
+      backUrl="https://develop.onbank.online"
+      authType="MTS_ID"
+    >
+      <AuthWindow />
 
-      <button>open modal</button>
-    </div>
+      <button onClick={openHandler}>open modal</button>
+    </ThemeProvider>
   );
 };
 

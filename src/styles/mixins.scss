@@ -1,0 +1,20 @@
+// Media
+@mixin mobile-width {
+  @media screen and (max-width: 991.8px) {
+    @content;
+  }
+}
+
+@mixin desktop-width {
+  @media screen and (min-width: 992px) {
+    @content;
+  }
+}
+
+//Sizes
+@mixin BlockLimitSize($size) {
+  max-width: $size;
+  min-width: $size;
+  max-height: $size;
+  min-height: $size;
+}
