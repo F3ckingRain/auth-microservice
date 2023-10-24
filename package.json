@@ -20,7 +20,7 @@
     "sass": "~1.64.2"
   },
   "devDependencies": {
-    "@ca-actual-projects/sobankui": "^1.4.37",
+    "@ca-actual-projects/sobankui": "^1.4.48",
     "@originjs/vite-plugin-federation": "~1.2.3",
     "@types/node": "^20.4.7",
     "@types/react": "~18.2.15",

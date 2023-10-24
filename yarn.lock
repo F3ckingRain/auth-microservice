@@ -219,10 +219,10 @@
     "@babel/helper-validator-identifier" "^7.22.5"
     to-fast-properties "^2.0.0"
 
-"@ca-actual-projects/sobankui@^1.4.37":
-  version "1.4.37"
-  resolved "https://gitlab.x-lab.com.ru/api/v4/projects/110/packages/npm/@ca-actual-projects/sobankui/-/@ca-actual-projects/sobankui-1.4.37.tgz#32bf3ff9ccf42d3187f694ca1c7356d0ae89aed8"
-  integrity sha1-Mr8/+cz0LTGH9pTKHHNW0K6Jrtg=
+"@ca-actual-projects/sobankui@^1.4.48":
+  version "1.4.48"
+  resolved "https://gitlab.x-lab.com.ru/api/v4/projects/110/packages/npm/@ca-actual-projects/sobankui/-/@ca-actual-projects/sobankui-1.4.48.tgz#f563c24fa4b5a60b86af1395c3111f75f0f208f5"
+  integrity sha1-9WPCT6S1pguGrxOVwxEfdfDyCPU=
 
 "@esbuild/android-arm64@0.18.17":
   version "0.18.17"

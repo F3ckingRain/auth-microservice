@@ -6,8 +6,6 @@
   position: relative;
 
   width: 100%;
-  height: 100%;
-  max-width: 400px;
 
   display: flex;
   flex-direction: column;
@@ -21,6 +19,8 @@
   &__sobank {
     padding: 30px;
 
+    max-width: 400px;
+
     gap: 20px;
 
     background-color: #fff;
@@ -32,6 +32,8 @@
 
   &__creditPro {
     padding: 24px;
+
+    max-width: 480px;
 
     gap: 24px;
 
@@ -135,6 +137,7 @@
     gap: 20px;
 
     &__title {
+      text-align: center;
       color: #1c1c1e;
       font-weight: 500;
       line-height: 1;
@@ -147,6 +150,7 @@
     &__title {
       max-width: calc(100% - 40px);
 
+      text-align: start;
       color: #fff;
       font-weight: 400;
       line-height: 125%;
@@ -180,6 +184,56 @@
   }
 }
 
+.sms {
+
+  &__sobank {
+    text-align: center;
+    color: #000;
+    line-height: 17px;
+  }
+
+  &__creditPro {
+    text-align: start;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 125%;
+  }
+}
+
+.codeInput {
+  text-align: center;
+  letter-spacing: 8px;
+
+  &__sobank {
+    padding: 10px 50px;
+
+  }
+}
+
+.code {
+  cursor: default;
+
+  >span {
+    white-space: nowrap;
+  }
+
+  &__sobank {
+    color: rgba(24,144,255,.7);
+  }
+
+  &__creditPro {
+    color: #B87DFF;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 125%;
+  }
+}
+
+.autologinBtn {
+  width: 100%;
+}
+
 @include mobile-width {
   .authWindow {
 
@@ -188,11 +242,35 @@
     }
   }
 
+  .code {
+    &__sobank {
+      font-size: 12px;
+    }
+  }
+
+  .autologinBtn {
+    font-size: 14px;
+  }
+
   .authBlock {
 
     &__creditPro {
       font-size: 20px;
 
+    }
+
+    &__sobank {
+
+      &__title {
+        font-size: 15px;
+      }
+    }
+  }
+
+  .sms {
+
+    &__sobank {
+      font-size: 13px;
     }
   }
 
@@ -213,7 +291,34 @@
   .authBlock {
 
     &__creditPro {
-      font-size: 28px;
+
+      &__title {
+        font-size: 28px;
+      }
+    }
+
+    &__sobank {
+
+      &__title {
+        font-size: 24px;
+      }
+    }
+  }
+
+  .autologinBtn {
+    font-size: 16px;
+  }
+
+  .code {
+    &__sobank {
+      font-size: 16px;
+    }
+  }
+
+  .sms {
+
+    &__sobank {
+      font-size: 16px;
     }
   }
 

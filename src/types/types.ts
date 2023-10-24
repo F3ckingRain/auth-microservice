@@ -1,5 +1,8 @@
-import { authType } from "@/recoil/atoms/userState";
+import { UserAuthType } from "@/recoil/atoms/userState";
 
 export type AuthWindowProps = {
-  changeAuthType?: (type: authType) => void;
+  afterAuth?: () => void;
+  changeAuthType?: (type: UserAuthType) => void;
 };
+
+export type Nullable<T> = T | null;

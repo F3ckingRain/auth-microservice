@@ -1,35 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import ModalModel from "@/models/ModalModel/ModalModel";
 
-const useCodeTimer = (showCode: boolean) => {
+const useCodeTimer = (showCode: boolean, autoLogin?: boolean) => {
   const { modalState, setTimer } = ModalModel();
 
-  const stateTimer = modalState.timer;
-  const lsTimer =
-    !!localStorage.getItem("modal-timer") &&
-    Number(localStorage.getItem("modal-timer"));
-
-  const [timer, setTimerState] = useState<number>(lsTimer || stateTimer);
+  const { timer } = modalState;
 
   useEffect(() => {
+    if (autoLogin) return undefined;
+
     if (timer < 1) {
       return localStorage.removeItem("modal-timer");
     }
 
     const handler = setInterval(() => {
       if (showCode) {
-        setTimerState((s) => {
-          setTimer(s - 1);
-          localStorage.setItem("modal-timer", `${s - 1}`);
+        localStorage.setItem("modal-timer", `${timer - 1}`);
 
-          return s - 1;
-        });
+        setTimer(timer - 1);
       }
     }, 1000);
 
     return () => clearInterval(handler);
-  }, [timer, showCode, setTimerState]);
+  }, [timer, showCode]);
 
   useEffect(() => () => localStorage.removeItem("modal-timer"), []);
 };

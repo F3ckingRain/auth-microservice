@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 
 import AuthWindow from "./components/AuthWindow/AuthWindow";
 
@@ -11,6 +11,8 @@ const App = () => {
   const openHandler = useCallback(() => {
     setOpenedModal(!modalState.opened);
   }, [setOpenedModal]);
+
+  useEffect(() => localStorage.clear(), []);
 
   return (
     <ThemeProvider

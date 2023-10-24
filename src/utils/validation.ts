@@ -1,4 +1,4 @@
-const resetMask = (value: string) => value.replace(/\D/g, "");
+export const resetMask = (value: string) => value.replace(/\D/g, "");
 
 export const validatePhone = (value: string): string => {
   const getValue = () => {

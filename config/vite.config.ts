@@ -13,11 +13,11 @@ export default defineConfig({
     react(),
     federation({
       name: "authService",
-      filename: "authEntry.js",
+      filename: "authService.js",
       exposes: {
         "./AuthWindow":
           "./src/containers/AuthWindowContainer/AuthWindowContainer",
-        "./AuthModel": "./src/models/ModalModel/ModalModel",
+        "./ModalModel": "./src/models/ModalModel/ModalModel",
       },
       shared: [
         "react",
@@ -32,12 +32,12 @@ export default defineConfig({
   ],
   server: {
     strictPort: true,
-    port: 9092,
+    port: 9090,
     host: true,
   },
   preview: {
     strictPort: true,
-    port: 9092,
+    port: 4174,
     host: true,
   },
   root: "src",
