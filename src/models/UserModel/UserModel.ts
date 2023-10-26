@@ -35,6 +35,12 @@ const UserModel = () => {
 
   const checkBirthDay = (value: string) => resetMask(value).length === 8;
 
+  const checkSmsCode = (value: string) => {
+    if (resetMask(value).length < 4) return undefined;
+
+    return !!localStorage.getItem("waiting-sms");
+  };
+
   const checkAccept = (value: boolean) => {
     if (checkPhoneNumber(state.phone) && checkBirthDay(state.birthDate)) {
       return value;
@@ -55,6 +61,7 @@ const UserModel = () => {
     checkPhoneNumber,
     checkBirthDay,
     checkAccept,
+    checkSmsCode,
   };
 };
 

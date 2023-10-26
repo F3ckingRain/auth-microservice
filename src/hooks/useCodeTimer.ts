@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import ModalModel from "@/models/ModalModel/ModalModel";
 
 const useCodeTimer = (showCode: boolean, autoLogin?: boolean) => {
-  const { modalState, setTimer } = ModalModel();
+  const { modalState, setTimer, resetTimer } = ModalModel();
 
   const { timer } = modalState;
 
@@ -22,10 +22,18 @@ const useCodeTimer = (showCode: boolean, autoLogin?: boolean) => {
       }
     }, 1000);
 
-    return () => clearInterval(handler);
+    return () => {
+      clearInterval(handler);
+    };
   }, [timer, showCode]);
 
-  useEffect(() => () => localStorage.removeItem("modal-timer"), []);
+  useEffect(
+    () => () => {
+      localStorage.removeItem("modal-timer");
+      resetTimer();
+    },
+    [],
+  );
 };
 
 export default useCodeTimer;

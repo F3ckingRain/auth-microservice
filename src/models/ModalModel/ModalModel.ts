@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 
+import { DEFAULT_CODE_TIMER } from "@/recoil/atoms/modalState";
 import useModal from "@/recoil/atoms/modalState/modalState";
 
 const ModalModel = () => {
@@ -29,6 +30,10 @@ const ModalModel = () => {
     setState((s) => ({ ...s, disabledCode }));
   }, []);
 
+  const resetTimer = useCallback(() => {
+    setState((s) => ({ ...s, timer: DEFAULT_CODE_TIMER }));
+  }, []);
+
   return {
     modalState: state,
     setOpenedModal,
@@ -37,6 +42,7 @@ const ModalModel = () => {
     setDisabledPhone,
     setShowCode,
     setDisabledCode,
+    resetTimer,
   };
 };
 

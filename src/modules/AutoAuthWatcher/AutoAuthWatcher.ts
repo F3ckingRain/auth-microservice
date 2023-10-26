@@ -3,7 +3,6 @@ import { useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import endpoints from "@/api/endpoints";
-import { instance } from "@/api/instance";
 import ModalModel from "@/models/ModalModel/ModalModel";
 import UserModel from "@/models/UserModel/UserModel";
 import { ThemeContext } from "@/theme/ThemeProvider";
@@ -15,7 +14,7 @@ export const removeTokenFromUrl = (token: string) => {
 const autoAuthWatcher = () => {
   const { search } = useLocation();
 
-  const { backUrl } = useContext(ThemeContext);
+  const { instance } = useContext(ThemeContext);
 
   const { setDisabledPhone, setDisabledCode, setShowChangePhone, setShowCode } =
     ModalModel();
@@ -31,7 +30,7 @@ const autoAuthWatcher = () => {
     if (token.length !== 15) return;
 
     instance
-      .get(`${backUrl}/${endpoints.getAutoLoginData}?autologin_token=${token}`)
+      .get(`${endpoints.getAutoLoginData}?autologin_token=${token}`)
       .then((res) => {
         setAutoAuthToken(token);
         setPhone(res.data.phone);
@@ -47,7 +46,7 @@ const autoAuthWatcher = () => {
           setUserType("MTS_ID");
         }
       });
-  }, [search, backUrl]);
+  }, [search, instance]);
 };
 
 export default autoAuthWatcher;

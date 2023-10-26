@@ -7,11 +7,11 @@ import { AuthWindowProps } from "@/types/types";
 type AuthWindowContainerProps = ContextType & AuthWindowProps;
 const AuthWindowContainer: FC<AuthWindowContainerProps> = ({
   theme,
-  backUrl,
+  instance,
   authType,
   ...props
 }) => (
-  <ThemeProvider theme={theme} backUrl={backUrl} authType={authType}>
+  <ThemeProvider theme={theme} instance={instance} authType={authType}>
     <AuthWindow {...props} />
   </ThemeProvider>
 );

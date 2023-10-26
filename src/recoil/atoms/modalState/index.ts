@@ -7,9 +7,11 @@ type modelStateType = {
   timer: number;
 };
 
+const DEFAULT_CODE_TIMER = 60; // in seconds
+
 const initTimer = localStorage.getItem("modal-timer")
   ? Number(localStorage.getItem("modal-timer"))
-  : 60;
+  : DEFAULT_CODE_TIMER;
 
 const initCode = localStorage.getItem("waiting-sms")
   ? !!localStorage.getItem("waiting-sms")
@@ -24,4 +26,4 @@ const initialStateModel: modelStateType = {
   timer: initTimer,
 };
 
-export { modelStateType, initialStateModel };
+export { modelStateType, initialStateModel, DEFAULT_CODE_TIMER };

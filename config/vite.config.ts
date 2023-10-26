@@ -1,10 +1,10 @@
 import dns from "dns";
+import { resolve } from "path";
 
 import federation from "@originjs/vite-plugin-federation";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import viteSvgr from "vite-plugin-svgr";
-import viteTsConfig from "vite-tsconfig-paths";
 
 dns.setDefaultResultOrder("verbatim");
 
@@ -12,7 +12,7 @@ export default defineConfig({
   plugins: [
     react(),
     federation({
-      name: "authService",
+      name: "auth-service",
       filename: "authService.js",
       exposes: {
         "./AuthWindow":
@@ -28,7 +28,6 @@ export default defineConfig({
       ],
     }),
     viteSvgr(),
-    viteTsConfig(),
   ],
   server: {
     strictPort: true,
@@ -40,6 +39,14 @@ export default defineConfig({
     port: 4174,
     host: true,
   },
+
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "../src"),
+      $fonts: resolve(__dirname, "../src/assets/fonts"),
+    },
+  },
+
   root: "src",
   publicDir: "../public",
   envDir: "../../.",

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from "react";
 
 import AuthWindow from "./components/AuthWindow/AuthWindow";
 
+import { instance } from "@/api/instance";
 import ModalModel from "@/models/ModalModel/ModalModel";
 import ThemeProvider from "@/theme/ThemeProvider";
 
@@ -15,11 +16,7 @@ const App = () => {
   useEffect(() => localStorage.clear(), []);
 
   return (
-    <ThemeProvider
-      theme="creditPro"
-      backUrl="https://develop.onbank.online"
-      authType="MTS_ID"
-    >
+    <ThemeProvider theme="creditPro" instance={instance} authType="MTS_ID">
       <AuthWindow />
 
       <button onClick={openHandler}>open modal</button>
