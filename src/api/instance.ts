@@ -8,4 +8,5 @@ export const instance = axios.create({
     frm: window.location.search || null,
     fronturl: window.location.origin,
   },
+  baseURL: "https://develop.onbank.online",
 });

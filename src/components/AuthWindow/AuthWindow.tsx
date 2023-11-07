@@ -28,9 +28,7 @@ import { MAX_DATE, MIN_DATE } from "@/constants/constants";
 import useCodeTimer from "@/hooks/useCodeTimer";
 import ModalModel from "@/models/ModalModel/ModalModel";
 import UserModel from "@/models/UserModel/UserModel";
-import autoAuthWatcher, {
-  removeTokenFromUrl,
-} from "@/modules/AutoAuthWatcher/AutoAuthWatcher";
+import autoAuthWatcher from "@/modules/AutoAuthWatcher/AutoAuthWatcher";
 import { UserAuthType } from "@/recoil/atoms/userState";
 import { ThemeContext } from "@/theme/ThemeProvider";
 import { AuthWindowProps } from "@/types/types";
@@ -46,6 +44,7 @@ const AuthWindow: FC<AuthWindowProps> = ({
   changeAuthType,
   afterAuth,
   pdfOpen,
+  notify,
 }) => {
   const [, setCookies] = useCookies();
 
@@ -89,6 +88,11 @@ const AuthWindow: FC<AuthWindowProps> = ({
 
   const waitingForSms = !!localStorage.getItem("waiting-sms");
   const showChangeCode = !autoAuthToken && waitingForSms;
+  const showButton =
+    !waitingForSms &&
+    (type === "MTS_ID"
+      ? checkPhoneNumber(phone) && checkBirthDay(birthDate)
+      : checkPhoneNumber(phone));
   const labelStyle: CSSProperties =
     theme === "sobank" ? { display: "none" } : {};
 
@@ -109,81 +113,124 @@ const AuthWindow: FC<AuthWindowProps> = ({
     });
   }, [instance]);
 
-  const sendSms = useCallback(
-    (userType: UserAuthType, phoneNumber: string, birthDay?: string) => {
-      if (!!localStorage.getItem("waiting-sms") || autoAuthToken) return;
+  const sendSms = useCallback(() => {
+    if (localStorage.getItem("waiting-sms")) return;
 
-      if (userType === "MTS_ID") {
-        if (!checkBirthDay(birthDay!)) return;
+    if (type === "MTS_ID") {
+      if (!checkBirthDay(birthDate!)) return;
 
-        instance
-          .post(`${endpoints.mobileIdSendSms}`, {
-            phone_number: { phone: phoneNumber },
-            send_sms_code_body: { phone: phoneNumber, birthday: birthDay },
-          })
-          .then(() => {
+      instance
+        .post(`${endpoints.mobileIdSendSms}`, {
+          phone_number: { phone },
+          send_sms_code_body: { phone, birthday: birthDate },
+        })
+        .then(() => {
+          localStorage.setItem("waiting-sms", `${true}`);
+          setShowCode(true);
+        })
+        .catch((err: AxiosError) => {
+          if (!err.response?.status) {
             localStorage.setItem("waiting-sms", `${true}`);
             setShowCode(true);
-          })
-          .catch((err: AxiosError) => {
-            if (err.response?.status === 404) {
-              instance
-                .post(`${endpoints.mtsSignIn}`, {
-                  phone: phoneNumber,
-                })
-                .then(() => {
-                  setUserType("BASIC_SMS");
+          }
+
+          if (err.response?.status === 403) {
+            setShowCode(true);
+            localStorage.setItem("waiting-sms", `${true}`);
+            notify("Попробуйте повторить попытку через минуту");
+          }
+
+          if (err.response?.status === 404) {
+            instance
+              .post(`${endpoints.mtsSignIn}`, {
+                phone,
+              })
+              .then(() => {
+                setUserType("BASIC_SMS");
+                localStorage.setItem("waiting-sms", `${true}`);
+                setShowCode(true);
+              })
+              .catch((e: AxiosError) => {
+                if (!e.response?.status) {
                   localStorage.setItem("waiting-sms", `${true}`);
                   setShowCode(true);
-                })
-                .catch((e: AxiosError) => {
-                  if (e.status === 404) {
-                    instance
-                      .post(`${endpoints.mtsSignUp}`, {
-                        phone: phoneNumber,
-                      })
-                      .then(() => {
-                        setUserType("BASIC_SMS");
+                }
+
+                if (e.response?.status === 403) {
+                  setShowCode(true);
+                  localStorage.setItem("waiting-sms", `${true}`);
+                  notify("Попробуйте повторить попытку через минуту");
+                }
+
+                if (e.response?.status === 404) {
+                  instance
+                    .post(`${endpoints.mtsSignUp}`, {
+                      phone,
+                    })
+                    .then(() => {
+                      setUserType("BASIC_SMS");
+                      localStorage.setItem("waiting-sms", `${true}`);
+                      setShowCode(true);
+                    })
+                    .catch((error) => {
+                      if (!error.response?.status) {
                         localStorage.setItem("waiting-sms", `${true}`);
                         setShowCode(true);
-                      });
-                  }
-                });
-            }
-          });
-      } else
-        instance
-          .post(`${endpoints.signIn}`, { phone: phoneNumber })
-          .then(() => {
+                      }
+
+                      if (error.response?.status === 403) {
+                        setShowCode(true);
+                        localStorage.setItem("waiting-sms", `${true}`);
+                        notify("Попробуйте повторить попытку через минуту");
+                      }
+                    });
+                }
+              });
+          }
+        });
+    } else
+      instance
+        .post(`${endpoints.signIn}`, { phone })
+        .then(() => {
+          localStorage.setItem("waiting-sms", `${true}`);
+          setShowCode(true);
+        })
+        .catch((err: AxiosError) => {
+          if (!err.response?.status) {
             localStorage.setItem("waiting-sms", `${true}`);
             setShowCode(true);
-          })
-          .catch((err: AxiosError) => {
-            if (!err.response?.status) {
-              localStorage.setItem("waiting-sms", `${true}`);
-              setShowCode(true);
-            }
+          }
 
-            if (err.response?.status === 404) {
-              instance
-                .post(`${endpoints.signUp}`, {
-                  phone: phoneNumber,
-                })
-                .then(() => {
+          if (err.response?.status === 403) {
+            setShowCode(true);
+            localStorage.setItem("waiting-sms", `${true}`);
+            notify("Попробуйте повторить попытку через минуту");
+          }
+
+          if (err.response?.status === 404) {
+            instance
+              .post(`${endpoints.signUp}`, {
+                phone,
+              })
+              .then(() => {
+                localStorage.setItem("waiting-sms", `${true}`);
+                setShowCode(true);
+              })
+              .catch((e: AxiosError) => {
+                if (err.response?.status === 403) {
+                  setShowCode(true);
+                  localStorage.setItem("waiting-sms", `${true}`);
+                  notify("Попробуйте повторить попытку через минуту");
+                }
+
+                if (!e.response?.status) {
                   localStorage.setItem("waiting-sms", `${true}`);
                   setShowCode(true);
-                })
-                .catch((e: AxiosError) => {
-                  if (!e.response?.status) {
-                    localStorage.setItem("waiting-sms", `${true}`);
-                    setShowCode(true);
-                  }
-                });
-            }
-          });
-    },
-    [instance, autoAuthToken, waitingForSms],
-  );
+                }
+              });
+          }
+        });
+  }, [instance, phone, type, birthDate, autoAuthToken, waitingForSms]);
 
   const afterConfirmCallback = useCallback(
     (res: AxiosResponse, smsCode: string) => {
@@ -280,20 +327,17 @@ const AuthWindow: FC<AuthWindowProps> = ({
   const confirmAutoLogin = useCallback(() => {
     if (!accept) return;
 
-    if (type === "MTS_ID") return;
-
-    instance
-      .post(`${endpoints.confirmAutologin}`, {
-        phone,
-        code: Number(code),
-        token: autoAuthToken,
-      })
-      .then((res) => {
-        afterConfirmCallback(res, code);
-
-        removeTokenFromUrl(autoAuthToken!);
-      });
-  }, [instance, phone, code, autoAuthToken, type]);
+    if (type === "MTS_ID") {
+      sendSms();
+    } else
+      instance
+        .post(`${endpoints.confirmAutologin}`, {
+          phone,
+          code: Number(code),
+          token: autoAuthToken,
+        })
+        .then((res) => afterConfirmCallback(res, code));
+  }, [instance, phone, code, autoAuthToken, type, birthDate, sendSms]);
 
   const smsChangeHandler = useCallback(
     (value: string) => {
@@ -336,13 +380,11 @@ const AuthWindow: FC<AuthWindowProps> = ({
 
       setBirthday(value);
 
-      if (!checkBirthDay(value)) return undefined;
+      if (!checkBirthDay(value)) return;
 
       if (!checkPhoneNumber(phone)) {
-        return fieldBirthDay.blur();
+        fieldBirthDay.blur();
       }
-
-      return sendSms(type, phone, value);
     },
     [phone, type],
   );
@@ -353,10 +395,6 @@ const AuthWindow: FC<AuthWindowProps> = ({
 
       const filled = checkPhoneNumber(value);
       setDisabledPhone(filled);
-
-      if (filled) {
-        sendSms(type, value, birthDate);
-      }
 
       return checkPhoneNumber(value);
     },
@@ -522,15 +560,15 @@ const AuthWindow: FC<AuthWindowProps> = ({
           openPdf={pdfOpen}
         />
 
-        {!!autoAuthToken && (
+        {showButton && (
           <CustomButton
             theme={theme}
-            onClick={confirmAutoLogin}
+            onClick={autoAuthToken ? confirmAutoLogin : sendSms}
             additionalClassName={`${styles.autologinBtn} ${
               styles[`autologinBtn__${theme}`]
             }`}
           >
-            Войти
+            {autoAuthToken ? "Войти" : "Отправить код"}
           </CustomButton>
         )}
       </div>

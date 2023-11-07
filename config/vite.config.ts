@@ -33,11 +33,31 @@ export default defineConfig({
     strictPort: true,
     port: 9090,
     host: true,
+
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "*",
+      Accept: "application/json, text/plain, */*",
+    },
+
+    cors: {
+      origin: ["https://dev-front.onbank.online"],
+    },
   },
   preview: {
     strictPort: true,
     port: 4174,
     host: true,
+
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "*",
+      Accept: "application/json, text/plain, */*",
+    },
+
+    cors: {
+      origin: ["https://dev-front.onbank.online"],
+    },
   },
 
   resolve: {
